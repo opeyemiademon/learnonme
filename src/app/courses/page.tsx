@@ -184,7 +184,12 @@ export default function CoursesPage() {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left">
-                  <input type="checkbox" className="rounded" />
+              <div className=" flex-shrink-0 flex items-center" >
+            <input 
+              type="checkbox" 
+              className="w-5 h-5 rounded border-2 border-gray-300 cursor-pointer accent-primary"
+            />
+          </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
                   Title ↑
@@ -213,7 +218,13 @@ export default function CoursesPage() {
               {courses.slice(0, displayedCourses).map((course) => (
                 <tr key={course.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
-                    <input type="checkbox" className="rounded" />
+                     <div className=" flex-shrink-0 flex items-center" >
+            <input 
+              type="checkbox" 
+              className="w-5 h-5 rounded border-2 border-gray-300 cursor-pointer accent-primary"
+            />
+          </div>
+
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">{course.title}</td>
                   <td className="px-6 py-4 text-sm text-gray-600">{course.category}</td>

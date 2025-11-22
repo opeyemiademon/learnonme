@@ -7,8 +7,24 @@
   --secondary: #F26711;
 }
 
+/* Dark mode root styles */
+html {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.light {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+html.dark {
+  background-color: #030712;
+  color: #f9fafb;
+}
+
 body {
-  @apply bg-gray-50;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
 }
 
 /* Custom scrollbar */

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Upload, X, FileText, Image as ImageIcon, Settings, Eye, Download } from 'lucide-react'
+import TextEditor from '../../TextEditor'
 
 interface LessonContentProps {
   onCancel: () => void
@@ -36,188 +38,218 @@ export default function LessonContent({ onCancel, onSave }: LessonContentProps) 
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Add Lesson</h2>
-        <button
-          onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Cancel
-        </button>
-      </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Create New Lesson</h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">Add engaging content for your students</p>
+            </div>
+            <button
+              onClick={onCancel}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              <X size={16} />
+              Cancel
+            </button>
+          </div>
+        </div>
 
-      {/* Content */}
-      <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Lesson Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Lesson Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-                  placeholder="Your lesson Name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
+        {/* Main Content */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          {/* Left Column - Main Content */}
+          <div className="xl:col-span-2 space-y-8">
+            {/* Lesson Details Card */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <FileText className="w-5 h-5 text-primary" />
+                </div>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Lesson Details</h2>
               </div>
 
-              {/* Lesson Description */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Lesson Description
-                </label>
-                <div className="border border-gray-300 rounded-lg">
-                  {/* Toolbar */}
-                  <div className="flex items-center gap-1 px-3 py-2 border-b border-gray-200 bg-gray-50 flex-wrap">
-                    <select className="text-sm border-0 bg-transparent">
-                      <option>Paragraph</option>
-                    </select>
-                    <div className="h-4 w-px bg-gray-300 mx-1" />
-                    <button className="p-1.5 hover:bg-gray-200 rounded" title="Bold">
-                      <span className="font-bold text-sm">B</span>
-                    </button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded" title="Italic">
-                      <span className="italic text-sm">I</span>
-                    </button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded" title="Underline">
-                      <span className="underline text-sm">U</span>
-                    </button>
-                    <div className="h-4 w-px bg-gray-300 mx-1" />
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≡</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≣</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">"</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≡</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊕</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊖</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">🔗</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊗</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">🖼</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⚙</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-sm">▤</button>
-                    <button className="p-1.5 hover:bg-gray-200 rounded text-xs">H&P</button>
-                  </div>
-                  {/* Editor Area */}
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, description: e.target.value }))
-                    }
-                    className="w-full px-4 py-3 min-h-[300px] focus:outline-none resize-none"
-                    placeholder="Enter lesson description..."
+              <div className="space-y-6">
+                {/* Lesson Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Lesson Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                    placeholder="Enter your lesson name"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-colors"
                   />
                 </div>
-              </div>
-            </div>
 
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* Enable Lesson Preview */}
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-gray-700">
-                    Enable Lesson Preview
+                {/* Lesson Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Lesson Description *
                   </label>
-                  <button
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        enableLessonPreview: !prev.enableLessonPreview,
-                      }))
-                    }
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      formData.enableLessonPreview ? 'bg-orange-600' : 'bg-gray-300'
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        formData.enableLessonPreview ? 'translate-x-6' : 'translate-x-1'
-                      }`}
+                  <div className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+                    <TextEditor 
+                      height={400} 
+                      placeholder="Enter lesson description..." 
+                      value={formData.description}
+                      onChange={(content: string) => setFormData((prev) => ({ ...prev, description: content }))}
                     />
-                  </button>
-                </div>
-              </div>
-
-              {/* Featured Image */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Featured Image
-                </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Featured" className="w-full h-auto rounded" />
-                  ) : (
-                    <>
-                      <svg className="h-8 w-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <label className="cursor-pointer">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                        />
-                        <span className="text-sm text-orange-600 hover:text-orange-700">
-                          Upload Image
-                        </span>
-                      </label>
-                      <p className="text-xs text-gray-500 mt-1">JPG and PNG formats, Max size 64 MB</p>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Download Materials */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Download Materials
-                </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                  <svg className="h-6 w-6 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      multiple
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          downloadMaterials: Array.from(e.target.files || []),
-                        }))
-                      }
-                      className="hidden"
-                    />
-                    <span className="text-sm text-orange-600 hover:text-orange-700">
-                      Drop documents or click here to upload
-                    </span>
-                  </label>
-                  <button className="mt-2 px-3 py-1.5 text-xs text-orange-600 border border-orange-600 rounded hover:bg-orange-50">
-                    WP Media Library
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Right Column - Settings & Media */}
+          <div className="space-y-8">
+            {/* Lesson Settings */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Settings</h3>
+              </div>
+
+              {/* Enable Lesson Preview */}
+              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Eye className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  <div>
+                    <label className="text-sm font-medium text-gray-900 dark:text-white">
+                      Enable Lesson Preview
+                    </label>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">Allow students to preview this lesson</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      enableLessonPreview: !prev.enableLessonPreview,
+                    }))
+                  }
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    formData.enableLessonPreview ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      formData.enableLessonPreview ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3 my-6">
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Featured Image</h3>
+              </div>
+
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                {imagePreview ? (
+                  <div className="relative">
+                    <img src={imagePreview} alt="Featured" className="w-full h-48 object-cover rounded-lg" />
+                    <button
+                      onClick={() => {
+                        setImagePreview(null)
+                        setFormData((prev) => ({ ...prev, featuredImage: null }))
+                      }}
+                      className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                      <span className="inline-block px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
+                        Choose Image
+                      </span>
+                    </label>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">JPG, PNG up to 10MB</p>
+                  </>
+                )}
+              </div>
+            
+            
+               <div className="flex items-center gap-3 my-6">
+                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Download className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Download Materials</h3>
+              </div>
+
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                <FileText className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        downloadMaterials: Array.from(e.target.files || []),
+                      }))
+                    }
+                    className="hidden"
+                  />
+                  <span className="inline-block px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
+                    Upload Files
+                  </span>
+                </label>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">PDF, DOC, ZIP files allowed</p>
+                {formData.downloadMaterials.length > 0 && (
+                  <div className="mt-4 text-left">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      {formData.downloadMaterials.length} file(s) selected:
+                    </p>
+                    <div className="space-y-1">
+                      {formData.downloadMaterials.map((file, index) => (
+                        <div key={index} className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                          {file.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mt-8">
+          <div className="flex flex-col sm:flex-row gap-4 sm:justify-end">
+            <button
+              onClick={handleSave}
+              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors"
+            >
+              Publish Lesson
+            </button>
+            <button 
+              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/10 transition-colors"
+            >
+              Save as Draft
+            </button>
+          </div>
+        </div>
+        
+          </div>
         </div>
 
-      {/* Footer */}
-      <div className="flex gap-2 justify-start pt-6 border-t border-gray-200">
-        <button
-          onClick={handleSave}
-          className="px-4 py-2 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg transition-colors"
-        >
-          Publish Lesson
-        </button>
-        <button className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-600 rounded-lg hover:bg-orange-50 transition-colors">
-          Save Lesson To Draft
-        </button>
+      
       </div>
     </div>
   )

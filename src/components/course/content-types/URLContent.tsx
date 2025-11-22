@@ -1,17 +1,19 @@
 'use client'
 
 import { useState } from 'react'
+import { Upload, X, FileText, Image as ImageIcon, Settings, Eye, Download, Video, Clock, Play, Link, Subtitles } from 'lucide-react'
 
 interface URLContentProps {
   onCancel: () => void
   onSave: (data: any) => void
 }
 
+
 export default function URLContent({ onCancel, onSave }: URLContentProps) {
   const [formData, setFormData] = useState({
     name: '',
     videoSource: 'youtube',
-    videoUrl: '',
+    videoUrl: '', 
     enableVideoShare: false,
     enableRightClick: false,
     enableVideoPreview: false,
@@ -47,17 +49,24 @@ export default function URLContent({ onCancel, onSave }: URLContentProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Add URL Content</h2>
-        <button
-          onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Cancel
-        </button>
-      </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Add Video Content</h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">Create engaging video lessons from YouTube, Vimeo, or custom URLs</p>
+            </div>
+            <button
+              onClick={onCancel}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+            >
+              <X size={16} />
+              Cancel
+            </button>
+          </div>
+        </div>
 
       {/* Content */}
       <div className="space-y-6">
@@ -431,6 +440,7 @@ export default function URLContent({ onCancel, onSave }: URLContentProps) {
           Save Lesson To Draft
         </button>
       </div>
+    </div>
     </div>
   )
 }

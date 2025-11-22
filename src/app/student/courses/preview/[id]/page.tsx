@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import StudentLayout from '@/components/StudentLayout'
-import { Heart, Share2, Facebook, Twitter, Linkedin, ChevronDown } from 'lucide-react'
+import { Heart, Share2, Facebook, Twitter, Linkedin, ChevronDown, Star } from 'lucide-react'
 import Button from '@/components/Button'
 
 interface Section {
@@ -10,6 +10,15 @@ interface Section {
   title: string
   lessons: number
   expanded: boolean
+}
+
+interface Review {
+  id: string
+  author: string
+  rating: number
+  title: string
+  content: string
+  date: string
 }
 
 interface CoursePreview {
@@ -31,11 +40,14 @@ interface CoursePreview {
   sections?: Section[]
   includes?: string[]
   overview?: string
+  reviews?: Review[]
+  averageRating?: number
 }
 
 export default function CoursePreviewPage({ params }: { params: { id: string } }) {
   const [liked, setLiked] = useState(false)
   const [expandedSections, setExpandedSections] = useState<string[]>(['section-1'])
+  const [activeTab, setActiveTab] = useState<'overview' | 'curriculum' | 'reviews'>('overview')
 
   const courseData: CoursePreview = {
     id: params.id,
@@ -114,6 +126,33 @@ See exactly what learners will see, polish any rough edges, then publish as a dr
       'Build loyal followers early',
       'Practical tools & templates',
       'Psychology of anticipation',
+    ],
+    averageRating: 4.8,
+    reviews: [
+      {
+        id: 'r-1',
+        author: 'John Doe',
+        rating: 5,
+        title: 'Excellent course!',
+        content: 'This course is incredibly comprehensive and well-structured. The instructor explains everything clearly and the practical examples are very helpful.',
+        date: '2 weeks ago',
+      },
+      {
+        id: 'r-2',
+        author: 'Jane Smith',
+        rating: 4,
+        title: 'Great content, very informative',
+        content: 'I learned a lot from this course. The only thing I would improve is adding more video content.',
+        date: '1 month ago',
+      },
+      {
+        id: 'r-3',
+        author: 'Mike Johnson',
+        rating: 5,
+        title: 'Best course I\'ve taken',
+        content: 'Highly recommended! The course material is up-to-date and the instructor is very responsive to questions.',
+        date: '2 months ago',
+      },
     ],
   }
 
@@ -214,72 +253,155 @@ Instead of worrying about crickets on launch day, you'll have a community that's
             {/* Tabs */}
             <div className="mb-8">
               <div className="flex gap-8 border-b border-gray-200 dark:border-gray-800">
-                <button className="pb-3 font-medium text-secondary border-b-2 border-secondary">
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`pb-3 font-medium transition-colors ${
+                    activeTab === 'overview'
+                      ? 'text-secondary border-b-2 border-secondary'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
                   Overview
                 </button>
                 {course.sections && (
-                  <button className="pb-3 font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                  <button
+                    onClick={() => setActiveTab('curriculum')}
+                    className={`pb-3 font-medium transition-colors ${
+                      activeTab === 'curriculum'
+                        ? 'text-secondary border-b-2 border-secondary'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
                     Curriculum
                   </button>
                 )}
-                <button className="pb-3 font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                <button
+                  onClick={() => setActiveTab('reviews')}
+                  className={`pb-3 font-medium transition-colors ${
+                    activeTab === 'reviews'
+                      ? 'text-secondary border-b-2 border-secondary'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
                   Reviews
                 </button>
               </div>
 
-              {/* Tab Content - Overview */}
-              <div className="mt-6 space-y-4">
-                <div className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                  {course.overview}
-                </div>
-              </div>
-            </div>
+              {/* Tab Content */}
+              <div className="mt-6">
+                {/* Overview Tab */}
+                {activeTab === 'overview' && (
+                  <div className="space-y-4">
+                    <div className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                      {course.overview}
+                    </div>
+                  </div>
+                )}
 
-            {/* Curriculum Section */}
-            {course.sections && (
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {course.sections.length} Sections • {course.sections.reduce((acc, s) => acc + s.lessons, 0)} Lessons • 1h 40m Duration
-                  </h3>
-                  <button className="text-secondary hover:text-secondary/80 text-sm font-medium">
-                    Collapse All
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  {course.sections.map((section) => (
-                    <div key={section.id} className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => toggleSection(section.id)}
-                        className="w-full px-4 py-3 bg-secondary text-white flex items-center justify-between hover:bg-secondary/90 transition-colors"
-                      >
-                        <span className="font-medium text-left">{section.title}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium">{section.lessons} Lessons</span>
-                          <ChevronDown
-                            size={18}
-                            className={`transition-transform ${expandedSections.includes(section.id) ? 'rotate-180' : ''}`}
-                          />
-                        </div>
+                {/* Curriculum Tab */}
+                {activeTab === 'curriculum' && course.sections && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {course.sections.length} Sections • {course.sections.reduce((acc, s) => acc + s.lessons, 0)} Lessons • 1h 40m Duration
+                      </h3>
+                      <button className="text-secondary hover:text-secondary/80 text-sm font-medium">
+                        Collapse All
                       </button>
+                    </div>
 
-                      {expandedSections.includes(section.id) && (
-                        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 space-y-2">
-                          {[...Array(section.lessons)].map((_, i) => (
-                            <div key={i} className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                              <span className="text-xs">📄</span>
-                              <span className="text-sm">Lesson {i + 1}</span>
-                              <ChevronDown size={16} className="ml-auto text-gray-400" />
+                    <div className="space-y-2">
+                      {course.sections.map((section) => (
+                        <div key={section.id} className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleSection(section.id)}
+                            className="w-full px-4 py-3 bg-secondary text-white flex items-center justify-between hover:bg-secondary/90 transition-colors"
+                          >
+                            <span className="font-medium text-left">{section.title}</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium">{section.lessons} Lessons</span>
+                              <ChevronDown
+                                size={18}
+                                className={`transition-transform ${expandedSections.includes(section.id) ? 'rotate-180' : ''}`}
+                              />
                             </div>
-                          ))}
+                          </button>
+
+                          {expandedSections.includes(section.id) && (
+                            <div className="bg-gray-50 dark:bg-gray-800/50 p-4 space-y-2">
+                              {[...Array(section.lessons)].map((_, i) => (
+                                <div key={i} className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                                  <span className="text-xs">📄</span>
+                                  <span className="text-sm">Lesson {i + 1}</span>
+                                  <ChevronDown size={16} className="ml-auto text-gray-400" />
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reviews Tab */}
+                {activeTab === 'reviews' && (
+                  <div className="space-y-6">
+                    {/* Average Rating */}
+                    {course.averageRating && (
+                      <div className="flex items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-800">
+                        <div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Course Rating</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-3xl font-bold text-gray-900 dark:text-white">{course.averageRating}</span>
+                            <div className="flex gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  size={16}
+                                  className={i < Math.floor(course.averageRating!) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-600'}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Reviews List */}
+                    <div className="space-y-4">
+                      {course.reviews && course.reviews.length > 0 ? (
+                        course.reviews.map((review) => (
+                          <div key={review.id} className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <p className="font-semibold text-gray-900 dark:text-white">{review.author}</p>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <div className="flex gap-1">
+                                    {[...Array(5)].map((_, i) => (
+                                      <Star
+                                        key={i}
+                                        size={14}
+                                        className={i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-600'}
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">{review.date}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2">{review.title}</h4>
+                            <p className="text-gray-700 dark:text-gray-300 text-sm">{review.content}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-gray-600 dark:text-gray-400 text-center py-8">No reviews yet. Be the first to review this course!</p>
                       )}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Right Column - Sidebar */}

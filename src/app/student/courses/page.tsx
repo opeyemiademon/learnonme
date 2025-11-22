@@ -21,13 +21,15 @@ export default function StudentCoursesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All Categories')
   const [selectedPricing, setSelectedPricing] = useState('Pricing')
+  const [displayedCourses, setDisplayedCourses] = useState(5)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const courses: Course[] = [
+  const allCourses: Course[] = [
     {
       id: '1',
       title: 'Smart Monetization: Groups Courses',
       badge: 'Monetize &amp; Grow Your Academy',
-      image: '/course-1.jpg',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop',
       duration: '0m',
       progress: 0,
       rating: 0,
@@ -38,7 +40,7 @@ export default function StudentCoursesPage() {
       id: '2',
       title: 'Unlock Progress: Certificates of Achievement',
       badge: 'Build Your First Course',
-      image: '/course-2.jpg',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=500&h=300&fit=crop',
       duration: '0m',
       progress: 100,
       rating: 0,
@@ -49,7 +51,7 @@ export default function StudentCoursesPage() {
       id: '3',
       title: 'Mastering the Course Builder',
       badge: 'Build Your First Course',
-      image: '/course-3.jpg',
+      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop',
       duration: '1h 30m',
       progress: 25,
       rating: 0,
@@ -60,7 +62,7 @@ export default function StudentCoursesPage() {
       id: '4',
       title: 'Creating Your First Course',
       badge: 'Build Your First Course',
-      image: '/course-4.jpg',
+      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop',
       duration: '1h 40m',
       progress: 0,
       rating: 0,
@@ -71,14 +73,58 @@ export default function StudentCoursesPage() {
       id: '5',
       title: 'Getting Started with Masteriyo LMS',
       badge: 'Build Your First Course',
-      image: '/course-5.jpg',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=500&h=300&fit=crop',
       duration: '1h 15m',
       progress: 5,
       rating: 0,
       date: '07/30/2025',
       status: 'in-progress',
     },
+    {
+      id: '6',
+      title: 'Advanced Course Strategies',
+      badge: 'Monetize &amp; Grow Your Academy',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop',
+      duration: '2h 15m',
+      progress: 0,
+      rating: 0,
+      date: '07/20/2025',
+      status: 'not-started',
+    },
+    {
+      id: '7',
+      title: 'Student Engagement Techniques',
+      badge: 'Build Your First Course',
+      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop',
+      duration: '1h 45m',
+      progress: 50,
+      rating: 0,
+      date: '07/15/2025',
+      status: 'in-progress',
+    },
+    {
+      id: '8',
+      title: 'Marketing Your Online Course',
+      badge: 'Monetize &amp; Grow Your Academy',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=500&h=300&fit=crop',
+      duration: '1h 20m',
+      progress: 0,
+      rating: 0,
+      date: '07/10/2025',
+      status: 'not-started',
+    },
   ]
+
+  const courses = allCourses.slice(0, displayedCourses)
+
+  const handleLoadMore = () => {
+    setIsLoading(true)
+    // Simulate loading delay
+    setTimeout(() => {
+      setDisplayedCourses((prev) => Math.min(prev + 3, allCourses.length))
+      setIsLoading(false)
+    }, 500)
+  }
 
   const renderStars = (rating: number) => {
     return (
@@ -151,13 +197,13 @@ export default function StudentCoursesPage() {
           {courses.map((course) => (
             <div key={course.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
               {/* Course Image */}
-              <div className="relative h-48 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center">
-                <div className="text-center p-6">
-                  <div className="w-24 h-24 mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-lg mb-4 flex items-center justify-center">
-                    <span className="text-4xl">📚</span>
-                  </div>
-                </div>
-                <div className="absolute top-3 right-3 w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded"></div>
+              <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                <img
+                  src={course.image}
+                  alt={course.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-3 right-3 w-8 h-8 bg-gradient-to-br from-secondary to-secondary/70 rounded"></div>
               </div>
 
               {/* Course Content */}
@@ -211,30 +257,23 @@ export default function StudentCoursesPage() {
           ))}
         </div>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-between">
+        {/* Load More Button */}
+        <div className="flex flex-col items-center gap-4">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Showing 1 - 5 out of 5
+            Showing {displayedCourses} out of {allCourses.length} courses
           </p>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Courses Per Page:</span>
-            <select className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-              <option>10</option>
-              <option>20</option>
-              <option>50</option>
-            </select>
-            <div className="flex gap-1 ml-4">
-              <button className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                &lt;
-              </button>
-              <button className="px-3 py-1 bg-purple-600 text-white rounded">
-                1
-              </button>
-              <button className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                &gt;
-              </button>
-            </div>
-          </div>
+          {displayedCourses < allCourses.length && (
+            <button
+              onClick={handleLoadMore}
+              disabled={isLoading}
+              className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            >
+              {isLoading ? 'Loading...' : 'Load More'}
+            </button>
+          )}
+          {displayedCourses >= allCourses.length && allCourses.length > 0 && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">All courses loaded</p>
+          )}
         </div>
       </div>
     </StudentLayout>

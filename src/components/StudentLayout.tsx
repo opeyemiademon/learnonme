@@ -12,9 +12,14 @@ export default function StudentLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, mounted } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+
+  // Prevent flash of unstyled content
+  if (!mounted) {
+    return <div className="min-h-screen bg-gray-50" />
+  }
 
   const menuItems = [
     { label: 'Dashboard', href: '/student/dashboard', icon: LayoutDashboard },
@@ -56,11 +61,11 @@ export default function StudentLayout({
               Account
             </Link>
             <button className="text-gray-900 dark:text-white font-medium hover:text-secondary flex items-center gap-1">
-              Learn Masteriyo
+              Learn From Home
               <ChevronRight size={16} className="rotate-90" />
             </button>
             <button className="px-4 py-2 border-2 border-secondary text-secondary rounded-full font-medium hover:bg-secondary/10">
-              Get Masteriyo Now
+             Download Mobile App
             </button>
           </nav>
 
@@ -116,7 +121,7 @@ export default function StudentLayout({
               <div className={`${sidebarCollapsed ? 'w-10 h-10' : 'w-16 h-16'} bg-primary rounded-lg flex items-center justify-center`}>
                 <BookOpen className="text-white" size={sidebarCollapsed ? 20 : 32} />
               </div>
-              {!sidebarCollapsed && <h3 className="font-semibold text-gray-900 dark:text-white text-center mt-3">Masteriyo Team</h3>}
+              {!sidebarCollapsed && <h3 className="font-semibold text-gray-900 dark:text-white text-center mt-3">Opeyemi Mansoor</h3>}
             </div>
           </div>
 
@@ -164,8 +169,10 @@ export default function StudentLayout({
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-6 md:p-8">
-          {children}
+        <main className="flex-1 p-6 md:p-8 flex justify-center">
+          <div className="w-full max-w-6xl">
+            {children}
+          </div>
         </main>
       </div>
     </div>

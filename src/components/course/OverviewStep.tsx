@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import TextEditor from '../TextEditor'
 
 interface OverviewStepProps {
   formData: {
@@ -85,42 +86,14 @@ export default function OverviewStep({ formData, onChange }: OverviewStepProps) 
             Course Description
           </label>
           <div className="border border-gray-300 rounded-lg">
-            {/* Toolbar */}
-            <div className="flex items-center gap-1 px-3 py-2 border-b border-gray-200 bg-gray-50 flex-wrap">
-              <select className="text-sm border-0 bg-transparent">
-                <option>Paragraph</option>
-              </select>
-              <div className="h-4 w-px bg-gray-300 mx-1" />
-              <button className="p-1.5 hover:bg-gray-200 rounded" title="Bold">
-                <span className="font-bold text-sm">B</span>
-              </button>
-              <button className="p-1.5 hover:bg-gray-200 rounded" title="Italic">
-                <span className="italic text-sm">I</span>
-              </button>
-              <button className="p-1.5 hover:bg-gray-200 rounded" title="Underline">
-                <span className="underline text-sm">U</span>
-              </button>
-              <div className="h-4 w-px bg-gray-300 mx-1" />
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≡</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≣</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">"</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">≡</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊕</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊖</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">🔗</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⊗</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">🖼</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">⚙</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-sm">▤</button>
-              <button className="p-1.5 hover:bg-gray-200 rounded text-xs">H&P</button>
-            </div>
-            {/* Editor Area */}
-            <textarea
-              value={formData.courseDescription}
-              onChange={handleDescriptionChange}
-              className="w-full px-4 py-3 min-h-[300px] focus:outline-none resize-none"
-              placeholder="Enter course description..."
-            />
+           
+           <TextEditor 
+          height={400} 
+          placeholder="Enter course description..." 
+          value={formData.courseDescription}
+          onChange={(content: string) => onChange('courseDescription', content)}
+        />
+        
           </div>
         </div>
 
@@ -129,12 +102,12 @@ export default function OverviewStep({ formData, onChange }: OverviewStepProps) 
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Course Highlights
           </label>
-          <textarea
-            value={formData.courseHighlights.join('\n')}
-            onChange={handleHighlightsChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[200px]"
-            placeholder="• Test Your Knowledge with Engaging Quizzes&#10;• Prepare with Real Exam Experience&#10;• Track Progress with an Intelligent Gradebook&#10;• Turn Weakness into Strength&#10;• Stay Motivated with Clear Milestones&#10;• Build Confidence for the Real World"
-          />
+          <TextEditor 
+          height={400} 
+          placeholder="Enter course highlights..." 
+          value={formData.courseHighlights.join('\n')}
+          onChange={(content: string) => onChange('courseHighlights', content)}
+        />
         </div>
       </div>
 
